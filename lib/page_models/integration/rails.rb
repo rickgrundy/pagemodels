@@ -1,0 +1,1 @@
+PageModels::Base.send(:include, Rails.application.routes.url_helpers)

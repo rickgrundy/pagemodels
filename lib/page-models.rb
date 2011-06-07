@@ -1,0 +1,1 @@
+Dir.glob(File.join(File.dirname(__FILE__), "page_models", "*.rb")).each { |f| require f }

@@ -1,0 +1,1 @@
+PageModels::Base.send(:include, RSpec::Matchers)
