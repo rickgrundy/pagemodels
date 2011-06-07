@@ -5,7 +5,7 @@ describe PageModels::Base do
   end
   
   class TestPageModel < PageModels::Base
-    def path
+    def url
       "/test-page"
     end
     
@@ -15,8 +15,8 @@ describe PageModels::Base do
   end
   
   describe "template methods which must be implemented by your page models" do
-    it "should raise an error if page models do not implement #path" do
-      lambda { UnimplementedPageModel.new.path }.should raise_error(PageModels::ImplementationError)
+    it "should raise an error if page models do not implement #url" do
+      lambda { UnimplementedPageModel.new.url }.should raise_error(PageModels::ImplementationError)
     end    
     
     it "should raise an error if page models do not implement #verify!" do
@@ -46,7 +46,7 @@ describe PageModels::Base do
       @driver = Object.new
       PageModels::Configuration.instance.stub(:driver).and_return(@driver)
       @page_model = TestPageModel.new
-      @driver.stub!(:current_path).and_return("/test-page")
+      @driver.stub!(:current_url).and_return("/test-page")
     end
     
     it "should visit the page, then call verify" do
@@ -56,7 +56,7 @@ describe PageModels::Base do
     end
     
     it "should visit the page, but not call verify if a redirect has occured" do
-      @driver.stub!(:current_path).and_return("/a-different-page")
+      @driver.stub!(:current_url).and_return("/a-different-page")
       @page_model.should_receive(:visit).with("/test-page")
       @page_model.should_not_receive(:verify!)
       @page_model.open!

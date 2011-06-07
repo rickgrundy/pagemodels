@@ -1,7 +1,7 @@
 module PageModels  
   class Base    
     def open!
-      visit(path)
+      visit(url)
       verify! unless followed_redirect?
     end    
     
@@ -11,7 +11,7 @@ module PageModels
       super(name, *args, &block)
     end
     
-    def path
+    def url
        raise ImplementationError.new(self, __method__)
     end
 
@@ -22,7 +22,7 @@ module PageModels
     private
     
     def followed_redirect?
-      current_path != path
+      current_url != url
     end
     
     def config
