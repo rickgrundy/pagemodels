@@ -1,10 +1,26 @@
+Page Models move complex and copy-pasted code out of your acceptance tests and into easily managed Ruby classes with (optional) integration for Rails, Cucumber, and RSpec.
+
+
+~~~~~~~~
+# env.rb
+require 'pagemodels'
+
+PageModels.configure do |config|
+  config.driver = :capybara
+  config.integrate :rspec
+  config.integrate :cucumber
+  config.integrate :rails
+end
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 # my_cucumber_test.feature
 Given I open the GitHub project page for the user "rickgrundy" and the repo "page-models"
 When I look at the commit history
 Then I should see at least 3 commits
 
 
-
+~~~~~~~~~~~~~~~~~~~~~~
 # my_cucumber_steps.rb
 When /I look at the commit history/ do
   page_model.navigate_to_commits
@@ -15,7 +31,7 @@ Then /I should see at least (\d+) commits/ do |count|
 end
 
 
-
+~~~~~~~~~~~~~~~~~~~~~~
 # GitHubProjectPage.rb
 class GitHubProjectPage < PageModels::Base
   def initialize(user, repo)

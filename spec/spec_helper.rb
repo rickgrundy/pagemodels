@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), "..", "lib", "page-models")
+require File.join(File.dirname(__FILE__), "..", "lib", "pagemodels")
