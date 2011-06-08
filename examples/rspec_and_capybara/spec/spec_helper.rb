@@ -1,7 +1,7 @@
 require 'capybara/rspec'
-require 'page-models'
+require 'pagemodels'
 
-Dir.glob(File.join(File.dirname(__FILE__), "page_models", "**", "*.rb")).each { |f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), "pagemodels", "**", "*.rb")).each { |f| require f }
 
 Capybara.default_driver = :selenium
 

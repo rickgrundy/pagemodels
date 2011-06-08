@@ -10,6 +10,6 @@ describe "Searching Google" do
     page_model.verify_special_results_option("Images")
     page_model.verify_special_results_option("News")
     
-    page_model.verify_top_result("http://www.github.com/rickgrundy/page-models")
+    page_model.verify_top_result("http://www.github.com/rickgrundy/pagemodels")
   end
 end

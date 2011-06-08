@@ -3,4 +3,4 @@ source 'http://rubygems.org'
 gem 'rspec', '>= 2.5.0'
 gem 'capybara'
 gem 'launchy'
-gem 'page-models', :path => File.join(File.dirname(__FILE__), "..", "..")
+gem 'pagemodels', :path => File.join(File.dirname(__FILE__), "..", "..")
