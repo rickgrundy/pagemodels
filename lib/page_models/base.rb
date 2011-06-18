@@ -2,7 +2,7 @@ module PageModels
   class Base    
     def open!
       visit(url)
-      verify! unless followed_redirect?
+      verify!
     end    
     
     def method_missing(name, *args, &block)
@@ -20,10 +20,6 @@ module PageModels
     end
     
     private
-    
-    def followed_redirect?
-      current_url != url
-    end
     
     def config
       PageModels::Configuration.instance

@@ -2,14 +2,14 @@ This example demonstrates how to use page models with RSpec to write acceptance 
 
 ~~~~~~~~~~
 
-See features/spec/spec_helper.rb for information about configuring PageModels to integrate with the various frameworks:
+See spec/spec_helper.rb for information about configuring PageModels to integrate with the various frameworks:
 
 PageModels.configure do |config|
   config.driver = :capybara
   config.integrate :rspec
 end
 
-spec_helper.rb also loads all everything in the page_models directory. GoogleSearchPage and GoogleResultsPage provide examples of page models which override PageModels::Base.
+spec_helper.rb also loads all everything in the pagemodels directory. GoogleSearchPage and GoogleResultsPage provide examples of page models which override PageModels::Base.
 
 ~~~~~~~~~~
 

@@ -1,0 +1,20 @@
+<h1>Acme Financial Report for <%= @year %></h1>
+
+<% if @txns.empty? %>
+  <h2>There are no <%= @txn_type %> transactions for <%= @year %></h2>
+<% else %>
+  <h2>All <%= @txn_type.titlecase %> Transactions</h2>
+
+  <table id="report"> 
+    <tr>
+      <th>Type</th>
+      <th>Amount</th>
+    </tr>
+    <% @txns.each do |txn| %>
+      <tr class="transaction">
+        <td class="type"><%= txn.type %></td>
+        <td class="amount"><%= txn.amount %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

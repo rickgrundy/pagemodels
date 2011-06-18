@@ -46,7 +46,6 @@ describe PageModels::Base do
       @driver = Object.new
       PageModels::Configuration.instance.stub(:driver).and_return(@driver)
       @page_model = TestPageModel.new
-      @driver.stub!(:current_url).and_return("/test-page")
     end
     
     it "should visit the page, then call verify" do
@@ -55,11 +54,5 @@ describe PageModels::Base do
       @page_model.open!
     end
     
-    it "should visit the page, but not call verify if a redirect has occured" do
-      @driver.stub!(:current_url).and_return("/a-different-page")
-      @page_model.should_receive(:visit).with("/test-page")
-      @page_model.should_not_receive(:verify!)
-      @page_model.open!
-    end
   end
 end

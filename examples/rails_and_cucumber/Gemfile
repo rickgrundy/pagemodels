@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'rails', '3.0.7'
+
+group :test do
+  gem 'cucumber-rails'
+  gem 'rspec', '>= 2.5.0'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'pagemodels', :path => File.join(File.dirname(__FILE__), "..", "..")
+end
