@@ -9,5 +9,7 @@ module PageModels
     args = args.scan(/"([^"]+)"/).map(&:first)
     page_model_class_name = page.gsub(/(?:^|[^\w])([a-z])/) { $1.upcase }
     Kernel.const_get(page_model_class_name).new(*args)
+  rescue NameError
+    raise MissingPageModelError.new(page_model_class_name)
   end
 end
