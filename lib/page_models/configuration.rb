@@ -22,8 +22,10 @@ module PageModels
       case @driver
         when :capybara
           Capybara.current_session
+        when :celerity
+          Celerity::Browser.new
         else
-          raise ConfigurationError.new("No driver configured.")
+          Watir::Browser.new(@driver)
       end
     end
   end
