@@ -5,8 +5,12 @@ describe PageModels::Base do
   end
   
   class TestPageModel < PageModels::Base
+    def initialize(url="http://test-page")
+      @url = url
+    end
+    
     def url
-      "/test-page"
+      @url
     end
     
     def verify!
@@ -41,18 +45,65 @@ describe PageModels::Base do
     end
   end
   
-  describe "opening a page" do
+  describe "constructing page URLs" do
     before(:each) do
-      @driver = Object.new
-      PageModels::Configuration.instance.stub(:driver).and_return(@driver)
+      PageModels::Configuration.instance.stub(:driver).and_return(Capybara::Session.new)
+      PageModels::Configuration.instance.base_url = "https://1.2.3.4:4321"
       @page_model = TestPageModel.new
     end
     
-    it "should visit the page, then call verify" do
-      @page_model.should_receive(:visit).with("/test-page")
-      @page_model.should_receive(:verify!)
-      @page_model.open!
+    it "uses the base URL from config" do
+      pm = TestPageModel.new("/foo")
+      pm.should_receive(:visit).with("https://1.2.3.4:4321/foo")
+      pm.should_receive(:verify!)
+      pm.open!
     end
     
+    it "ignores base URL if http:// is specified" do
+      pm = TestPageModel.new("http://foo")
+      pm.should_receive(:visit).with("http://foo")
+      pm.should_receive(:verify!)
+      pm.open!
+    end
+    
+    it "ignores base URL if https:// is specified" do
+      pm = TestPageModel.new("https://foo")
+      pm.should_receive(:visit).with("https://foo")
+      pm.should_receive(:verify!)
+      pm.open!
+    end    
+  end
+  
+  describe "opening a page with driver" do
+    before(:each) do
+      @page_model = TestPageModel.new
+    end
+    
+    describe "for capybara" do
+      it "should visit the page, then call verify" do
+        PageModels::Configuration.instance.stub(:driver).and_return(Capybara::Session.new)
+        @page_model.should_receive(:visit).with("http://test-page")
+        @page_model.should_receive(:verify!)
+        @page_model.open!
+      end
+    end
+    
+    describe "for celerity" do
+      it "should goto the page, then call verify" do
+        PageModels::Configuration.instance.stub(:driver).and_return(Celerity::Browser.new)
+        @page_model.should_receive(:goto).with("http://test-page")
+        @page_model.should_receive(:verify!)
+        @page_model.open!
+      end
+    end   
+    
+    describe "for watir-webdriver" do
+      it "should goto the page, then call verify" do
+        PageModels::Configuration.instance.stub(:driver).and_return(Watir::Browser.new(:chrome))
+        @page_model.should_receive(:goto).with("http://test-page")
+        @page_model.should_receive(:verify!)
+        @page_model.open!
+      end
+    end 
   end
 end

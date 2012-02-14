@@ -1,31 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + "../../spec_helper")
 
-module Capybara
-  def self.current_session
-    @session ||= Object.new
-  end
-end
-
-module Watir
-  class Browser
-    attr_reader :browser
-    def initialize(browser)
-      @browser = browser
-    end
-  end
-end
-
-module Celerity
-  class Browser
-  end
-end
-
 describe PageModels::Configuration do
   before(:each) do
     @config = PageModels::Configuration.instance
+    @config.reset!
   end
   
-  describe "providing a driver" do    
+  describe "providing a driver" do        
     it "should provide a Capybara session" do
       @config.driver = :capybara
       @config.driver.should == Capybara.current_session
@@ -55,6 +36,17 @@ describe PageModels::Configuration do
         @config.driver.browser.should == :ie
       end
     end
+    
+    it "should return the same instance every time" do
+      @config.base_url.should == "http://localhost:3000"
+      @config.driver = :celerity
+      @config.driver.should === @config.driver
+    end
+  end
+  
+  it "provides a base URL" do
+    @config.base_url = "https://1.2.3.4:4321"
+    @config.base_url.should == "https://1.2.3.4:4321"
   end
   
   describe "integrating with frameworks" do

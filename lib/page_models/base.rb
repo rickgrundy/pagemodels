@@ -1,7 +1,11 @@
 module PageModels  
   class Base    
     def open!
-      visit(url)
+      if config.driver.class.to_s == "Capybara::Session"
+        visit(full_url)
+      else
+        goto(full_url)
+      end
       verify!
     end    
     
@@ -23,6 +27,10 @@ module PageModels
     
     def config
       PageModels::Configuration.instance
+    end
+    
+    def full_url
+      url =~ /^https?:\/\// ? url : config.base_url + url
     end
   end
 end

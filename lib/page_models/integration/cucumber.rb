@@ -8,6 +8,11 @@ Then /^I should see the (.+ page)(.*)$/ do |page, args|
   page_model.verify!
 end
 
+at_exit do
+  driver = PageModels::Configuration.instance.driver
+  driver.close if driver.class.to_s == "Watir::Browser"
+end
+
 module PageModels
   module CucumberIntegration
     attr_accessor :page_model
