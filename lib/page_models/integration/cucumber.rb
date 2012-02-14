@@ -1,9 +1,9 @@
-Given /^I open the (.+ page)(.*)$/ do |page, args|
+Given /^I (?:open|visit|go to) the (.+\s?page)(.*)$/ do |page, args|
   self.page_model = PageModels.create(page, args)
   page_model.open!
 end
 
-Then /^I should see the (.+ page)(.*)$/ do |page, args|
+Then /^I should (?:see|be on) the (.+\s?page)(.*)$/ do |page, args|
   self.page_model = PageModels.create(page, args)
   page_model.verify!
 end
