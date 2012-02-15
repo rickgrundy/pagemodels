@@ -31,7 +31,7 @@ module PageModels
           when :capybara
             Capybara.current_session
           when :celerity
-            Celerity::Browser.new
+            Celerity::Browser.new(:javascript_exceptions => true, :log_level => :all)
           else
             Watir::Browser.new(@driver)
         end
