@@ -24,11 +24,11 @@ Then I should see at least 3 commits
 ~~~~~~~~~~~~~~~~~~~~~~
 # my_cucumber_steps.rb
 When /I look at the commit history/ do
-  page_model.navigate_to_commits
+  page.navigate_to_commits
 end
 
 Then /I should see at least (\d+) commits/ do |count|
-  page_model.verify_commit_count(count)
+  page.verify_commit_count(count)
 end
 
 
