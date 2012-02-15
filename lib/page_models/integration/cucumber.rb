@@ -24,7 +24,7 @@ end
 
 module PageModels
   module CucumberIntegration
-    attr_accessor :page_model
+    attr_accessor :page, :page_model
   end
 end
 World(PageModels::CucumberIntegration)
