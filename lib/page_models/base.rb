@@ -6,7 +6,6 @@ module PageModels
       else
         goto(full_url)
       end
-      verify!
     end    
     
     def method_missing(name, *args, &block)
