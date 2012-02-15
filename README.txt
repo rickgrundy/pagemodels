@@ -6,7 +6,8 @@ Page Models move complex and copy-pasted code out of your acceptance tests and i
 require 'pagemodels'
 
 PageModels.configure do |config|
-  config.driver = :capybara
+  config.driver = :capybara  # Or :celerity, :firefox, :chrome, :ie (browsers will use watir-webdriver)
+  config.base_url = "https://www.github.com"
   config.integrate :rspec
   config.integrate :cucumber
   config.integrate :rails
@@ -23,11 +24,11 @@ Then I should see at least 3 commits
 ~~~~~~~~~~~~~~~~~~~~~~
 # my_cucumber_steps.rb
 When /I look at the commit history/ do
-  page_model.navigate_to_commits
+  page.navigate_to_commits
 end
 
 Then /I should see at least (\d+) commits/ do |count|
-  page_model.verify_commit_count(count)
+  page.verify_commit_count(count)
 end
 
 
@@ -39,7 +40,7 @@ class GitHubProjectPage < PageModels::Base
   end
   
   def url
-    "https://www.github.com/#{@user}/#{@repo}/"
+    "/#{@user}/#{@repo}/"
   end
   
   def verify!

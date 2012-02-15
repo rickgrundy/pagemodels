@@ -18,10 +18,15 @@ describe PageModels::Base do
     end
   end
   
+  before(:each) do
+    PageModels::Configuration.instance.stub(:driver).and_return(Watir::Browser.new(:chrome))
+    @page_model = TestPageModel.new
+  end
+  
   describe "template methods which must be implemented by your page models" do
     it "should raise an error if page models do not implement #url" do
       lambda { UnimplementedPageModel.new.url }.should raise_error(PageModels::ImplementationError)
-    end    
+    end
     
     it "should raise an error if page models do not implement #verify!" do
       lambda { UnimplementedPageModel.new.verify! }.should raise_error(PageModels::ImplementationError)
@@ -29,14 +34,8 @@ describe PageModels::Base do
   end
   
   describe "delegating methods to the driver for less verbose page models" do
-    before(:each) do
-      @driver = Object.new
-      PageModels::Configuration.instance.stub(:driver).and_return(@driver)
-      @page_model = TestPageModel.new
-    end
-    
     it "should delegate a missing method to the driver" do
-      @driver.should_receive(:do_something_cool).with(:please)
+      PageModels::Configuration.instance.driver.should_receive(:do_something_cool).with(:please)
       @page_model.do_something_cool(:please)
     end
     
@@ -49,7 +48,6 @@ describe PageModels::Base do
     before(:each) do
       PageModels::Configuration.instance.stub(:driver).and_return(Capybara::Session.new)
       PageModels::Configuration.instance.base_url = "https://1.2.3.4:4321"
-      @page_model = TestPageModel.new
     end
     
     it "uses the base URL from config" do
@@ -74,11 +72,7 @@ describe PageModels::Base do
     end    
   end
   
-  describe "opening a page with driver" do
-    before(:each) do
-      @page_model = TestPageModel.new
-    end
-    
+  describe "opening a page with driver" do    
     describe "for capybara" do
       it "should visit the page, then call verify" do
         PageModels::Configuration.instance.stub(:driver).and_return(Capybara::Session.new)
