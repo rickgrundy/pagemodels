@@ -6,7 +6,7 @@ module PageModels
       else
         goto(full_url)
       end
-    end    
+    end
     
     def method_missing(name, *args, &block)
       config.driver.send(name, *args, &block)
