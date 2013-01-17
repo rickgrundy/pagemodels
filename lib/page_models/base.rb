@@ -6,10 +6,10 @@ module PageModels
       else
         goto(full_url)
       end
+      verify!
     end
     
     def method_missing(name, *args, &block)
-      puts name
       config.driver.send(name, *args, &block)
     rescue NoMethodError
       super(name, *args, &block)

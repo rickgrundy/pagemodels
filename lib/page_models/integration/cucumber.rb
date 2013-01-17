@@ -1,20 +1,18 @@
 Given /^I (?:open|visit|go to) the (.+\s?page)(.*)$/ do |page_name, args|
-  self.page = PageModels.create(page_name, args)
-  self.page_model = self.page
-  self.page.open!
-  self.page.verify!
+  $page_model = PageModels.create(page_name, args)
+  $page_model.open!
+  $page_model.verify!
 end
 
 Given /^I (?:try to|attempt to|fail to) (?:open|visit|go to) the (.+\s?page)(.*)$/ do |page_name, args|
-  self.page = PageModels.create(page_name, args)
-  self.page_model = self.page
-  self.page.open!
+  $page_model = PageModels.create(page_name, args)
+  $page_model.open!
 end
 
 Then /^I should (?:see|be on) the (.+\s?page)(.*)$/ do |page_name, args|
-  self.page = PageModels.create(page_name, args)
-  self.page_model = self.page  
-  self.page.verify!
+  $page_model = PageModels.create(page_name, args)
+  $page_model = self.page  
+  $page_model.verify!
 end
 
 at_exit do
@@ -23,8 +21,14 @@ at_exit do
 end
 
 module PageModels
-  module CucumberIntegration
-    attr_accessor :page, :page_model
+  module PageModelMethodDelegation
+    def method_missing(name, *args, &block)
+      if $page_model && $page_model.respond_to?(name)
+        $page_model.send(name, *args, &block) 
+      else
+        super(name, *args, &block)
+      end
+    end
   end
 end
-World(PageModels::CucumberIntegration)
+World(PageModels::PageModelMethodDelegation)
