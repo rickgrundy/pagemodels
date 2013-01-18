@@ -100,4 +100,22 @@ describe PageModels::Base do
       end
     end 
   end
+  
+  describe "lifecycle hooks" do
+    it "calls hooks before and after _verify" do
+      TestPageModel.after_verify :do_something
+      TestPageModel.after_verify :do_something_else
+      @page_model.should_receive :do_something
+      @page_model.should_receive :do_something_else
+      
+      @page_model._verify!
+      
+      TestPageModel.before_verify :do_something
+      TestPageModel.before_verify :do_something_else
+      @page_model.should_receive(:do_something).twice
+      @page_model.should_receive(:do_something_else).twice
+      
+      @page_model._verify!
+    end
+  end
 end

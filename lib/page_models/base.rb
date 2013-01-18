@@ -1,5 +1,15 @@
 module PageModels  
-  class Base    
+  class Base
+    @@callbacks = {:before_verify => [], :after_verify => []}
+
+    def self.before_verify(method_name)
+      @@callbacks[:before_verify] << method_name
+    end
+        
+    def self.after_verify(method_name)
+      @@callbacks[:after_verify] << method_name
+    end
+    
     def open!
       if config.driver.class.to_s == "Capybara::Session"
         visit(full_url)
@@ -7,6 +17,12 @@ module PageModels
         goto(full_url)
       end
       verify!
+    end
+    
+    def _verify!
+      @@callbacks[:before_verify].each { |callback| send(callback) if respond_to?(callback) }      
+      verify!
+      @@callbacks[:after_verify].each { |callback| send(callback) if respond_to?(callback) }
     end
     
     def method_missing(name, *args, &block)

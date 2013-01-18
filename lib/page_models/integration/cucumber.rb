@@ -1,7 +1,7 @@
 Given /^I (?:open|visit|go to) the (.+\s?page)(.*)$/ do |page_name, args|
   $page_model = PageModels.create(page_name, args)
   $page_model.open!
-  $page_model.verify!
+  $page_model._verify!
 end
 
 Given /^I (?:try to|attempt to|fail to) (?:open|visit|go to) the (.+\s?page)(.*)$/ do |page_name, args|
@@ -12,7 +12,7 @@ end
 Then /^I should (?:see|be on) the (.+\s?page)(.*)$/ do |page_name, args|
   $page_model = PageModels.create(page_name, args)
   $page_model = self.page  
-  $page_model.verify!
+  $page_model._verify!
 end
 
 at_exit do
