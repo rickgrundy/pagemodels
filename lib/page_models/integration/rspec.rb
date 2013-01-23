@@ -20,9 +20,17 @@ module PageModels
     def method_missing(name, *args, &block)
       if $page_model && $page_model.respond_to?(name)
         $page_model.send(name, *args, &block) 
+      elsif config.driver.respond_to?(name)
+        config.driver.send(name, *args, &block)         
       else
         super(name, *args, &block)
       end
+    end
+    
+    private
+    
+    def config
+      PageModels::Configuration.instance
     end
   end
 end
