@@ -2,10 +2,17 @@ PageModels::Base.send(:include, RSpec::Matchers)
 
 module PageModels
   module RSpecIntegration
+    def try_to_open_page(page_model)
+      page_model = page_model.new if page_model.is_a? Class
+      $page_model = page_model
+      $page_model.open!
+    end
+    
     def open_page(page_model)
       page_model = page_model.new if page_model.is_a? Class
       $page_model = page_model
       $page_model.open!
+      $page_model._verify!
     end
     
     def should_see_page(page_model)
@@ -13,7 +20,6 @@ module PageModels
       $page_model = page_model
       $page_model._verify!
     end
-    
   end
   
   module PageModelMethodDelegation

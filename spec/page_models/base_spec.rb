@@ -53,49 +53,43 @@ describe PageModels::Base do
     it "uses the base URL from config" do
       pm = TestPageModel.new("/foo")
       pm.should_receive(:visit).with("https://1.2.3.4:4321/foo")
-      pm.should_receive(:verify!)
       pm.open!
     end
     
     it "ignores base URL if http:// is specified" do
       pm = TestPageModel.new("http://foo")
       pm.should_receive(:visit).with("http://foo")
-      pm.should_receive(:verify!)
       pm.open!
     end
     
     it "ignores base URL if https:// is specified" do
       pm = TestPageModel.new("https://foo")
       pm.should_receive(:visit).with("https://foo")
-      pm.should_receive(:verify!)
       pm.open!
     end    
   end
   
   describe "opening a page with driver" do    
     describe "for capybara" do
-      it "should visit the page, then call verify" do
+      it "should visit the page" do
         PageModels::Configuration.instance.stub(:driver).and_return(Capybara::Session.new)
         @page_model.should_receive(:visit).with("http://test-page")
-        @page_model.should_receive(:verify!)
         @page_model.open!
       end
     end
     
     describe "for celerity" do
-      it "should goto the page, then call verify" do
+      it "should goto the page" do
         PageModels::Configuration.instance.stub(:driver).and_return(Celerity::Browser.new)
         @page_model.should_receive(:goto).with("http://test-page")
-        @page_model.should_receive(:verify!)
         @page_model.open!
       end
     end   
     
     describe "for watir-webdriver" do
-      it "should goto the page, then call verify" do
+      it "should goto the page" do
         PageModels::Configuration.instance.stub(:driver).and_return(Watir::Browser.new(:chrome))
         @page_model.should_receive(:goto).with("http://test-page")
-        @page_model.should_receive(:verify!)
         @page_model.open!
       end
     end 

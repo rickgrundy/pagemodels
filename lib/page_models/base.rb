@@ -16,7 +16,6 @@ module PageModels
       else
         goto(full_url)
       end
-      verify!
     end
     
     def _verify!
